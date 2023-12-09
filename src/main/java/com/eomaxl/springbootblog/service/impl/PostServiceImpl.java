@@ -2,6 +2,7 @@ package com.eomaxl.springbootblog.service.impl;
 
 import com.eomaxl.springbootblog.entity.Post;
 import com.eomaxl.springbootblog.payload.PostDto;
+import com.eomaxl.springbootblog.payload.PostResponse;
 import com.eomaxl.springbootblog.respository.PostRepository;
 import com.eomaxl.springbootblog.service.PostService;
 import org.springframework.data.domain.Page;
@@ -40,13 +41,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize, String sortBy) {
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir){
         Pageable pageAble = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Post> allPosts = postRepository.findAll(pageAble);
         List<Post> listOfPosts = allPosts.getContent();
         List<PostDto> postDtos = listOfPosts.stream().map(this::mapToDTO).toList();
-
-        return postDtos;
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNo(allPosts.getNumber());
+        postResponse.setPageSize(allPosts.getSize());
+        postResponse.setTotalElements(allPosts.getTotalElements());
+        postResponse.setTotalPages(allPosts.getTotalPages());
+        postResponse.setLast(allPosts.isLast());
+        return postResponse;
     }
 
     private PostDto mapToDTO(Post post){

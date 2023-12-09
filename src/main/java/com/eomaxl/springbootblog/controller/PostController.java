@@ -2,6 +2,7 @@ package com.eomaxl.springbootblog.controller;
 
 import com.eomaxl.springbootblog.payload.PostDto;
 import com.eomaxl.springbootblog.service.PostService;
+import com.eomaxl.springbootblog.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,11 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<PostDto> getAllPosts(@RequestParam(value="pageNo", defaultValue="0") int pageNo,
-                                               @RequestParam(value="pageSize", defaultValue="5") int pageSize,
-                                               @RequestParam(value="sortBy", defaultValue="id") String sortBy){
-        return new ResponseEntity(postService.getAllPosts(pageNo,pageSize,sortBy), HttpStatus.OK);
+    public ResponseEntity<PostDto> getAllPosts(@RequestParam(value="pageNo", defaultValue= AppConstants.DEFAULT_PAGE_NUMBER,required = false) int pageNo,
+                                               @RequestParam(value="pageSize", defaultValue=AppConstants.DEFAULT_PAGE_SIZE,required = false) int pageSize,
+                                               @RequestParam(value="sortBy", defaultValue=AppConstants.DEFAULT_SORT_BY,required = false) String sortBy,
+                                                @RequestParam(value="sortDirection", defaultValue=AppConstants.DEFAULT_SORT_DIRECTION,required = false) String sortDirection){
+        return new ResponseEntity(postService.getAllPosts(pageNo,pageSize,sortBy,sortDirection), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
