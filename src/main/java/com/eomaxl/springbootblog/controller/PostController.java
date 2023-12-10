@@ -3,6 +3,7 @@ package com.eomaxl.springbootblog.controller;
 import com.eomaxl.springbootblog.payload.PostDto;
 import com.eomaxl.springbootblog.service.PostService;
 import com.eomaxl.springbootblog.utils.AppConstants;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class PostController {
     }
 
     @PostMapping()
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return ResponseEntity.ok(postService.createPost(postDto));
     }
 
@@ -35,7 +36,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePostById(@PathVariable Long id, @RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> updatePostById(@Valid @PathVariable Long id, @RequestBody PostDto postDto){
         return new ResponseEntity(postService.updatePostById(id, postDto), HttpStatus.OK);
     }
 

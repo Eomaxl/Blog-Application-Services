@@ -2,6 +2,7 @@ package com.eomaxl.springbootblog.controller;
 
 import com.eomaxl.springbootblog.payload.CommentDto;
 import com.eomaxl.springbootblog.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class CommentController {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentDto> createComment(@PathVariable  Long postId,@RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentDto> createComment(@PathVariable  Long postId,@Valid @RequestBody CommentDto commentDto){
         return ResponseEntity.ok(commentService.createComment(postId, commentDto));
     }
 
@@ -33,7 +34,7 @@ public class CommentController {
     }
 
     @PutMapping("/posts/{postId}/comments/{commentId}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Long postId,@PathVariable Long commentId,@RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentDto> updateComment(@PathVariable Long postId,@PathVariable Long commentId, @Valid @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.updateComment(postId,commentId,commentDto),org.springframework.http.HttpStatus.OK);
     }
 
